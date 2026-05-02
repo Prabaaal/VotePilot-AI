@@ -26,7 +26,7 @@
 Setup       [----------]   0%
 Day 1       [----------]   0%
 Day 2       [----------]   0%
-Day 3       [----------]   0%
+Day 3       [██████████] 100%
 Day 4       [----------]   0%
 Day 5       [----------]   0%
 Day 6       [----------]   0%
@@ -196,29 +196,29 @@ _________________________________________________________________
 **Branch:** `feat/dashboard`
 
 ### Tasks
-- [ ] Dashboard page (`/dashboard`) built
-- [ ] Reads `castit_user_id` from localStorage
-- [ ] Fetches profile from Firestore
-- [ ] Loading state while fetching
-- [ ] Runs profile through `recommendationEngine`
-- [ ] Renders "You Are Here" stage label
-- [ ] Renders "Your Next Action"
-- [ ] Renders warnings (if any)
-- [ ] `components/ChecklistItem.tsx` built
-- [ ] Checklist renders from recommendation engine output
-- [ ] `components/ReadinessRing.tsx` built:
-  - [ ] SVG circular progress ring
-  - [ ] Animates from 0 to score on mount
-  - [ ] Score number in center
-  - [ ] Color: red (0–30), amber (31–60), green (61–100)
-- [ ] Readiness ring integrated into dashboard
-- [ ] Quick nav cards → Simulator, Ask CastIt, Myth Buster
-- [ ] All 3 demo personas show different dashboards confirmed
+- [x] Dashboard page (`/dashboard`) built
+- [x] Reads `castit_user_id` from localStorage
+- [x] Fetches profile from Firestore
+- [x] Loading state while fetching
+- [x] Runs profile through `recommendationEngine`
+- [x] Renders "You Are Here" stage label
+- [x] Renders "Your Next Action"
+- [x] Renders warnings (if any)
+- [x] `components/ChecklistItem.tsx` built
+- [x] Checklist renders from recommendation engine output
+- [x] `components/ReadinessRing.tsx` built:
+  - [x] SVG circular progress ring
+  - [x] Animates from 0 to score on mount
+  - [x] Score number in center
+  - [x] Color: red (0–30), amber (31–60), green (61–100)
+- [x] Readiness ring integrated into dashboard
+- [x] Quick nav cards → Simulator, Ask CastIt, Myth Buster
+- [x] All 3 demo personas show different dashboards confirmed
 
 ### Commits
-- [ ] `feat: dashboard page - firestore read + recommendation render`
-- [ ] `feat: voter readiness score ring component`
-- [ ] `feat: quick nav links on dashboard`
+- [x] `feat: dashboard page - firestore read + recommendation render`
+- [x] `feat: voter readiness score ring component`
+- [x] `feat: quick nav links on dashboard`
 
 ### Notes / Blockers
 ```
@@ -228,7 +228,7 @@ _________________________________________________________________
 ```
 
 ### End of Day Status
-- [ ] ✅ Goal met — moving to Day 4
+- [x] ✅ Goal met — moving to Day 4
 - [ ] ⚠️ Partial — carrying over: ___________________________
 - [ ] ❌ Blocked — reason: ___________________________________
 
