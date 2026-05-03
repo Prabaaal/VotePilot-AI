@@ -4,148 +4,166 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { useState, useEffect, Suspense } from "react"
 import { saveUserProfile, getSessionId } from "@/lib/firestore"
 import type { UserProfile } from "@/types"
+import { Navbar } from "@/components/Navbar"
+import { getRecommendations } from "@/lib/recommendationEngine"
+
+const INDIAN_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+  "Delhi", "Jammu and Kashmir", "Ladakh", "Puducherry"
+]
+
+function ToggleGroup({
+  value,
+  onChange,
+  yesLabel = "Yes",
+  noLabel = "No",
+}: {
+  value: boolean
+  onChange: (v: boolean) => void
+  yesLabel?: string
+  noLabel?: string
+}) {
+  return (
+    <div className="toggle-group">
+      <button
+        type="button"
+        onClick={() => onChange(true)}
+        className={`toggle-option${value ? " active" : ""}`}
+      >
+        {yesLabel}
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange(false)}
+        className={`toggle-option${!value ? " active" : ""}`}
+      >
+        {noLabel}
+      </button>
+    </div>
+  )
+}
 
 function OnboardingContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const persona = searchParams.get("persona")
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [step, setStep] = useState(0)
   const [profile, setProfile] = useState<UserProfile>({
     age: 18,
     firstTimeVoter: false,
     hasVoterId: true,
     movedRecently: false,
-    state: "Assam"
+    state: "Assam",
   })
 
   useEffect(() => {
     if (persona === "first-time") {
-      setProfile({
-        age: 18,
-        firstTimeVoter: true,
-        hasVoterId: false,
-        movedRecently: false,
-        state: "Assam"
-      })
+      setProfile({ age: 18, firstTimeVoter: true, hasVoterId: false, movedRecently: false, state: "Assam" })
     } else if (persona === "moved") {
-      setProfile({
-        age: 30,
-        firstTimeVoter: false,
-        hasVoterId: true,
-        movedRecently: true,
-        state: "Maharashtra"
-      })
+      setProfile({ age: 30, firstTimeVoter: false, hasVoterId: true, movedRecently: true, state: "Maharashtra" })
     } else if (persona === "last-minute") {
-      setProfile({
-        age: 45,
-        firstTimeVoter: false,
-        hasVoterId: true,
-        movedRecently: false,
-        state: "Delhi"
-      })
+      setProfile({ age: 45, firstTimeVoter: false, hasVoterId: true, movedRecently: false, state: "Delhi" })
     }
+    // If a persona is provided, jump to review step
+    if (persona) setStep(4)
   }, [persona])
 
-  const INDIAN_STATES = [
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", 
-    "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", 
-    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
-    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Delhi", "Jammu and Kashmir"
-  ]
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    try {
-      const sessionId = getSessionId()
-      await saveUserProfile(sessionId, profile)
-      router.push("/dashboard")
-    } catch (error) {
-      console.error("Error saving profile:", error)
-      alert("Failed to save profile. Proceeding to dashboard locally.")
-      // Even if Firebase fails (due to no config), just route to dashboard
-      // Note: Ideally, we'd mock it if firestore is not configured, but this is fine for the hackathon.
-      router.push("/dashboard")
-    } finally {
-      setIsLoading(false)
+    const sessionId = getSessionId()
+    const recs = getRecommendations(profile)
+    const profileWithScore = {
+      ...profile,
+      readinessScore: recs.readinessScore,
+      completedModules: ["onboarding"],
     }
+    // Synchronous localStorage save — no await, no spinner, no hang
+    saveUserProfile(sessionId, profileWithScore)
+    router.push("/dashboard")
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to VotePilot</h1>
-        <p className="text-gray-500 mb-8">
-          Tell us a little about yourself so we can personalize your election preparation journey.
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
+  const steps = [
+    {
+      label: "Your Age",
+      content: (
+        <div>
+          <label className="label">How old are you?</label>
+          <input
+            id="age-input"
+            type="number"
+            required
+            min={1}
+            max={120}
+            className="input"
+            value={profile.age || ""}
+            onChange={(e) => setProfile({ ...profile, age: parseInt(e.target.value) || 0 })}
+            autoFocus
+          />
+          {profile.age < 18 && profile.age > 0 && (
+            <p style={{ color: '#EF4444', fontSize: '13px', marginTop: '8px' }}>
+              ⚠️ You need to be 18+ to vote. You can still learn about the process.
+            </p>
+          )}
+        </div>
+      ),
+    },
+    {
+      label: "Voting History",
+      content: (
+        <div>
+          <label className="label">Are you a first-time voter?</label>
+          <ToggleGroup
+            value={profile.firstTimeVoter}
+            onChange={(v) => setProfile({ ...profile, firstTimeVoter: v })}
+            yesLabel="Yes, first time 🆕"
+            noLabel="No, voted before"
+          />
+          <p style={{ fontSize: '13px', color: '#6B7280', marginTop: '12px' }}>
+            This helps us tailor the experience — first-timers get extra guidance.
+          </p>
+        </div>
+      ),
+    },
+    {
+      label: "Voter ID",
+      content: (
+        <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Your Age</label>
-            <input 
-              type="number" 
-              required
-              min={1}
-              max={120}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-gray-50 text-gray-900"
-              value={profile.age || ""}
-              onChange={(e) => setProfile({ ...profile, age: parseInt(e.target.value) || 0 })}
+            <label className="label">Do you have a Voter ID (EPIC card)?</label>
+            <ToggleGroup
+              value={profile.hasVoterId}
+              onChange={(v) => setProfile({ ...profile, hasVoterId: v })}
+              yesLabel="Yes, I have it ✅"
+              noLabel="No, I don't"
             />
           </div>
-
-          <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
-            <div>
-              <p className="font-medium text-gray-900">First-Time Voter?</p>
-              <p className="text-sm text-gray-500">I have never voted in an election before.</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={profile.firstTimeVoter}
-                onChange={(e) => setProfile({ ...profile, firstTimeVoter: e.target.checked })}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-
-          <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
-            <div>
-              <p className="font-medium text-gray-900">Do you have a Voter ID?</p>
-              <p className="text-sm text-gray-500">Also known as an EPIC card.</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={profile.hasVoterId}
-                onChange={(e) => setProfile({ ...profile, hasVoterId: e.target.checked })}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-
-          <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
-            <div>
-              <p className="font-medium text-gray-900">Moved recently?</p>
-              <p className="text-sm text-gray-500">I have changed my address since the last election.</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={profile.movedRecently}
-                onChange={(e) => setProfile({ ...profile, movedRecently: e.target.checked })}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">State / Union Territory</label>
+            <label className="label">Have you moved recently?</label>
+            <ToggleGroup
+              value={profile.movedRecently}
+              onChange={(v) => setProfile({ ...profile, movedRecently: v })}
+              yesLabel="Yes, changed address"
+              noLabel="No, same address"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Your State",
+      content: (
+        <div>
+          <label className="label" htmlFor="state-select">Your state / union territory</label>
+          <div style={{ position: 'relative' }}>
             <select
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none bg-gray-50 text-gray-900 appearance-none"
+              id="state-select"
+              className="input"
+              style={{ appearance: 'none', paddingRight: '40px' }}
               value={profile.state}
               onChange={(e) => setProfile({ ...profile, state: e.target.value })}
             >
@@ -153,16 +171,130 @@ function OnboardingContent() {
                 <option key={state} value={state}>{state}</option>
               ))}
             </select>
+            <div style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#1A1A2E' }}>
+              ▾
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Review",
+      content: (
+        <div>
+          <div style={{ background: '#F5F0E8', border: '2px solid #1A1A2E', borderRadius: '14px', padding: '20px', marginBottom: '16px' }}>
+            <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '16px', color: '#1A1A2E', marginBottom: '16px' }}>
+              Your Profile Summary
+            </h3>
+            {[
+              { label: "Age", value: `${profile.age} years old` },
+              { label: "First-time voter", value: profile.firstTimeVoter ? "Yes" : "No" },
+              { label: "Has Voter ID", value: profile.hasVoterId ? "Yes ✅" : "No ⚠️" },
+              { label: "Moved recently", value: profile.movedRecently ? "Yes ⚠️" : "No" },
+              { label: "State", value: profile.state },
+            ].map((item) => (
+              <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E0D8' }}>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6B7280' }}>{item.label}</span>
+                <span style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '14px', color: '#1A1A2E' }}>{item.value}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: '13px', color: '#6B7280', textAlign: 'center' }}>
+            Your profile is saved anonymously. No login required.
+          </p>
+        </div>
+      ),
+    },
+  ]
+
+  const totalSteps = steps.length
+  const progress = ((step + 1) / totalSteps) * 100
+
+  return (
+    <div className="min-h-screen page-enter" style={{ background: '#F5F0E8' }}>
+      <Navbar />
+
+      <div className="max-w-lg mx-auto px-4 py-10">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '28px', color: '#1A1A2E', marginBottom: '8px' }}>
+            Set Up Your <span style={{ color: '#FF6B2B' }}>Voter Profile</span>
+          </h1>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6B7280' }}>
+            4 quick questions to personalize your election journey.
+          </p>
+        </div>
+
+        {/* Progress */}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <span style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '12px', color: '#1A1A2E' }}>
+              {steps[step].label}
+            </span>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#6B7280' }}>
+              Step {step + 1} of {totalSteps}
+            </span>
+          </div>
+          <div style={{ background: '#E5E0D8', borderRadius: '8px', height: '8px', border: '2px solid #1A1A2E', overflow: 'hidden' }}>
+            <div
+              style={{
+                background: '#FF6B2B',
+                width: `${progress}%`,
+                height: '100%',
+                borderRadius: '6px',
+                transition: 'width 0.3s ease',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Card */}
+        <form onSubmit={handleSubmit}>
+          <div className="card" style={{ marginBottom: '20px', minHeight: '200px' }}>
+            {steps[step].content}
           </div>
 
-          <button 
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-4 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
-          >
-            {isLoading ? "Saving Profile..." : "Go to Dashboard"}
-          </button>
+          {/* Navigation */}
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {step > 0 && (
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{ flex: 1 }}
+                onClick={() => setStep((s) => s - 1)}
+              >
+                ← Back
+              </button>
+            )}
+            {step < totalSteps - 1 ? (
+              <button
+                type="button"
+                className="btn-primary"
+                style={{ flex: 1 }}
+                onClick={() => setStep((s) => s + 1)}
+                disabled={step === 0 && (!profile.age || profile.age < 1)}
+              >
+                Continue →
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{ flex: 1 }}
+                >
+                Go to My Dashboard →
+              </button>
+            )}
+          </div>
         </form>
+
+        {/* Skip to dashboard if already set up */}
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '13px', color: '#6B7280' }}>
+          Already set up?{" "}
+          <a href="/dashboard" style={{ color: '#FF6B2B', fontWeight: 600 }}>
+            Go to dashboard →
+          </a>
+        </p>
       </div>
     </div>
   )
@@ -170,7 +302,13 @@ function OnboardingContent() {
 
 export default function OnboardingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center" style={{ background: '#F5F0E8' }}>
+          <div className="skeleton" style={{ width: '400px', height: '400px', borderRadius: '20px' }} />
+        </div>
+      }
+    >
       <OnboardingContent />
     </Suspense>
   )

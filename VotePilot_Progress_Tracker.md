@@ -1,4 +1,4 @@
-# CastIt — Hackathon Progress Tracker
+# VotePilot AI — Hackathon Progress Tracker
 ### Hack2skill PromptWars | Solo | 10 Days
 ### Update this file at the end of every work session
 
@@ -8,13 +8,13 @@
 
 | Field | Value |
 |---|---|
-| Project Name | CastIt |
+| Project Name | VotePilot AI |
 | Hackathon | Hack2skill PromptWars — Election Process Education |
 | Organizer | Google |
 | Builder | Prabal |
 | Start Date | _______________ |
 | Submission Deadline | _______________ |
-| GitHub Repo | github.com/castit-ai |
+| GitHub Repo | github.com/prabaaal/VotePilot-AI |
 | Production URL | _______________ |
 | Cloud Run URL | _______________ |
 
@@ -26,7 +26,7 @@
 Setup       [----------]   0%
 Day 1       [----------]   0%
 Day 2       [----------]   0%
-Day 3       [----------]   0%
+Day 3       [██████████] 100%
 Day 4       [----------]   0%
 Day 5       [----------]   0%
 Day 6       [----------]   0%
@@ -46,9 +46,9 @@ Total       [----------]   0%
 ## Pre-Build Setup Checklist
 
 ### Google Account & GCP
-- [ ] Clean Google account designated for CastIt
-- [ ] GCP project created — name: `castit-ai`
-- [ ] Project ID noted: `castit-ai-___________`
+- [ ] Clean Google account designated for VotePilot
+- [ ] GCP project created — name: `VotePilot-ai`
+- [ ] Project ID noted: `VotePilot-ai-___________`
 - [ ] Hackathon GCP credits linked to billing
 - [ ] Billing alert set at $10
 - [ ] APIs enabled:
@@ -77,7 +77,7 @@ Total       [----------]   0%
   - [ ] Model Code of Conduct
   - [ ] Voter Helpline 1950 Guide
   - [ ] EPIC Enrollment Guide
-- [ ] Vertex AI Search app created — name: `castit-search`
+- [ ] Vertex AI Search app created — name: `VotePilot-search`
 - [ ] Datastore created — name: `eci-documents`
 - [ ] PDFs uploaded to datastore
 - [ ] Indexing started (note start time: _________)
@@ -88,8 +88,8 @@ Total       [----------]   0%
 - [ ] gcloud CLI installed
 - [ ] gcloud authenticated (`gcloud auth login`)
 - [ ] GCP project set (`gcloud config set project`)
-- [ ] Artifact Registry repo created — name: `castit-repo`
-- [ ] Service account created — name: `castit-cloudrun`
+- [ ] Artifact Registry repo created — name: `VotePilot-repo`
+- [ ] Service account created — name: `VotePilot-cloudrun`
 - [ ] Roles assigned to service account:
   - [ ] Vertex AI User
   - [ ] Cloud Datastore User
@@ -98,13 +98,13 @@ Total       [----------]   0%
 - [ ] Key added to Secret Manager
 
 ### Local Dev & GitHub
-- [ ] Antigravity project created — name: `castit-ai`
+- [ ] Antigravity project created — name: `VotePilot-ai`
 - [ ] `.env.local` created with all variable names
 - [ ] `.gitignore` created — `.env.local` excluded
-- [ ] GitHub repo created — `castit-ai` (private)
+- [ ] GitHub repo created — `VotePilot-ai` (private)
 - [ ] Initial commit pushed
-- [ ] Domain checked (castit.in / castit.app / castit.ai)
-- [ ] Social handles checked (@castitapp)
+- [ ] Domain checked (VotePilot.in / VotePilot.app / VotePilot.ai)
+- [ ] Social handles checked (@VotePilotapp)
 
 ---
 
@@ -113,23 +113,23 @@ Total       [----------]   0%
 **Branch:** `feat/landing-onboarding`
 
 ### Tasks
-- [ ] Next.js 14 + Tailwind scaffolded in Antigravity
-- [ ] Folder structure created
-- [ ] `lib/firebase.ts` — Firebase init
-- [ ] `lib/firestore.ts` — shell with placeholder functions
-- [ ] `.env.local.example` created
-- [ ] Landing page (`/`) built:
-  - [ ] Hero section
-  - [ ] 3 demo persona buttons
-  - [ ] "How it works" 3-card section
-  - [ ] Features overview strip
-- [ ] Persona button → navigates to `/onboarding`
-- [ ] Firestore write/read verified in console
+- [x] Next.js 14 + Tailwind scaffolded in Antigravity
+- [x] Folder structure created
+- [x] `lib/firebase.ts` — Firebase init
+- [x] `lib/firestore.ts` — shell with placeholder functions
+- [x] `.env.local.example` created
+- [x] Landing page (`/`) built:
+  - [x] Hero section
+  - [x] 3 demo persona buttons
+  - [x] "How it works" 3-card section
+  - [x] Features overview strip
+- [x] Persona button → navigates to `/onboarding`
+- [x] Firestore write/read verified in console
 
 ### Commits
-- [ ] `chore: next.js scaffold with tailwind`
-- [ ] `feat: landing page - hero, personas, how it works`
-- [ ] `chore: firebase firestore connected and verified`
+- [x] `chore: next.js scaffold with tailwind`
+- [x] `feat: landing page - hero, personas, how it works`
+- [x] `chore: firebase firestore connected and verified`
 
 ### Notes / Blockers
 ```
@@ -139,7 +139,7 @@ _________________________________________________________________
 ```
 
 ### End of Day Status
-- [ ] ✅ Goal met — moving to Day 2
+- [x] ✅ Goal met — moving to Day 2
 - [ ] ⚠️ Partial — carrying over: ___________________________
 - [ ] ❌ Blocked — reason: ___________________________________
 
@@ -150,32 +150,32 @@ _________________________________________________________________
 **Branch:** `feat/landing-onboarding`
 
 ### Tasks
-- [ ] Onboarding page (`/onboarding`) built:
-  - [ ] Age field
-  - [ ] First-time voter toggle
-  - [ ] Has Voter ID toggle
-  - [ ] Recently moved toggle
-  - [ ] State dropdown (all Indian states)
-  - [ ] Help mode selector
-- [ ] UUID generation on submit
-- [ ] UUID stored in localStorage as `castit_user_id`
-- [ ] Demo persona auto-fill working from landing
-- [ ] Form validation working
-- [ ] Profile saves to Firestore `users/{userId}`
-- [ ] Verified in Firebase Studio console
-- [ ] Redirects to `/dashboard` on submit
-- [ ] `lib/recommendationEngine.ts` built:
-  - [ ] Under-18 case handled
-  - [ ] No voter ID case handled
-  - [ ] Recently moved case handled
-  - [ ] First-time voter case handled
-  - [ ] Returns checklist, nextAction, warnings, readinessSeedScore
-- [ ] All 3 demo personas tested — different results confirmed
+- [x] Onboarding page (`/onboarding`) built:
+  - [x] Age field
+  - [x] First-time voter toggle
+  - [x] Has Voter ID toggle
+  - [x] Recently moved toggle
+  - [x] State dropdown (all Indian states)
+  - [x] Help mode selector
+- [x] UUID generation on submit
+- [x] UUID stored in localStorage as `VotePilot_user_id`
+- [x] Demo persona auto-fill working from landing
+- [x] Form validation working
+- [x] Profile saves to Firestore `users/{userId}`
+- [x] Verified in Firebase Studio console
+- [x] Redirects to `/dashboard` on submit
+- [x] `lib/recommendationEngine.ts` built:
+  - [x] Under-18 case handled
+  - [x] No voter ID case handled
+  - [x] Recently moved case handled
+  - [x] First-time voter case handled
+  - [x] Returns checklist, nextAction, warnings, readinessSeedScore
+- [x] All 3 demo personas tested — different results confirmed
 
 ### Commits
-- [ ] `feat: onboarding page - form, validation, uuid generation`
-- [ ] `feat: firestore write on onboarding submit`
-- [ ] `feat: recommendation engine - profile to checklist logic`
+- [x] `feat: onboarding page - form, validation, uuid generation`
+- [x] `feat: firestore write on onboarding submit`
+- [x] `feat: recommendation engine - profile to checklist logic`
 
 ### Notes / Blockers
 ```
@@ -185,7 +185,7 @@ _________________________________________________________________
 ```
 
 ### End of Day Status
-- [ ] ✅ Goal met — moving to Day 3
+- [x] ✅ Goal met — moving to Day 3
 - [ ] ⚠️ Partial — carrying over: ___________________________
 - [ ] ❌ Blocked — reason: ___________________________________
 
@@ -196,29 +196,29 @@ _________________________________________________________________
 **Branch:** `feat/dashboard`
 
 ### Tasks
-- [ ] Dashboard page (`/dashboard`) built
-- [ ] Reads `castit_user_id` from localStorage
-- [ ] Fetches profile from Firestore
-- [ ] Loading state while fetching
-- [ ] Runs profile through `recommendationEngine`
-- [ ] Renders "You Are Here" stage label
-- [ ] Renders "Your Next Action"
-- [ ] Renders warnings (if any)
-- [ ] `components/ChecklistItem.tsx` built
-- [ ] Checklist renders from recommendation engine output
-- [ ] `components/ReadinessRing.tsx` built:
-  - [ ] SVG circular progress ring
-  - [ ] Animates from 0 to score on mount
-  - [ ] Score number in center
-  - [ ] Color: red (0–30), amber (31–60), green (61–100)
-- [ ] Readiness ring integrated into dashboard
-- [ ] Quick nav cards → Simulator, Ask CastIt, Myth Buster
-- [ ] All 3 demo personas show different dashboards confirmed
+- [x] Dashboard page (`/dashboard`) built
+- [x] Reads `VotePilot_user_id` from localStorage
+- [x] Fetches profile from Firestore
+- [x] Loading state while fetching
+- [x] Runs profile through `recommendationEngine`
+- [x] Renders "You Are Here" stage label
+- [x] Renders "Your Next Action"
+- [x] Renders warnings (if any)
+- [x] `components/ChecklistItem.tsx` built
+- [x] Checklist renders from recommendation engine output
+- [x] `components/ReadinessRing.tsx` built:
+  - [x] SVG circular progress ring
+  - [x] Animates from 0 to score on mount
+  - [x] Score number in center
+  - [x] Color: red (0–30), amber (31–60), green (61–100)
+- [x] Readiness ring integrated into dashboard
+- [x] Quick nav cards → Simulator, Ask VotePilot, Myth Buster
+- [x] All 3 demo personas show different dashboards confirmed
 
 ### Commits
-- [ ] `feat: dashboard page - firestore read + recommendation render`
-- [ ] `feat: voter readiness score ring component`
-- [ ] `feat: quick nav links on dashboard`
+- [x] `feat: dashboard page - firestore read + recommendation render`
+- [x] `feat: voter readiness score ring component`
+- [x] `feat: quick nav links on dashboard`
 
 ### Notes / Blockers
 ```
@@ -228,7 +228,7 @@ _________________________________________________________________
 ```
 
 ### End of Day Status
-- [ ] ✅ Goal met — moving to Day 4
+- [x] ✅ Goal met — moving to Day 4
 - [ ] ⚠️ Partial — carrying over: ___________________________
 - [ ] ❌ Blocked — reason: ___________________________________
 
@@ -242,7 +242,7 @@ _________________________________________________________________
 - [ ] GCP project fully configured
 - [ ] All APIs confirmed enabled
 - [ ] ECI PDFs downloaded and ready
-- [ ] Vertex AI Search app created: `castit-search`
+- [ ] Vertex AI Search app created: `VotePilot-search`
 - [ ] Datastore created: `eci-documents`
 - [ ] All 5 PDFs uploaded
 - [ ] Indexing started — start time: ___________
@@ -339,39 +339,39 @@ _________________________________________________________________
 
 ---
 
-## Day 6 — Cloud Run + Ask CastIt Page
-**Goal:** Pipeline deployed to Cloud Run, Ask CastIt page working end-to-end
-**Branch:** `feat/ask-castit`
+## Day 6 — Cloud Run + Ask VotePilot Page
+**Goal:** Pipeline deployed to Cloud Run, Ask VotePilot page working end-to-end
+**Branch:** `feat/ask-VotePilot`
 
 ### Tasks
 - [ ] Dockerfile finalized
 - [ ] Docker image built and pushed to Artifact Registry
-- [ ] Cloud Run service deployed: `castit-backend`
+- [ ] Cloud Run service deployed: `VotePilot-backend`
 - [ ] Cloud Run URL noted: `https://_____________________.run.app`
 - [ ] `GET /health` returns 200 on production URL ✓
 - [ ] `CLOUD_RUN_ORCHESTRATOR_URL` added to `.env.local`
 - [ ] `app/api/ask/route.ts` built — Next.js proxy to Cloud Run
 - [ ] Error handling on API route (500 → friendly message)
-- [ ] Ask CastIt page (`/ask`) built:
-  - [ ] Text input with submit
-  - [ ] 5 preloaded example question chips
-  - [ ] Explain Level toggle (Simple / Standard / Detailed)
-  - [ ] Language toggle (English / Hindi / Assamese)
-  - [ ] Loading skeleton while waiting
-  - [ ] `components/ResponseCard.tsx` — 4 fields + source citation
+- [x] Ask VotePilot page (`/ask`) built:
+  - [x] Text input with submit
+  - [x] 5 preloaded example question chips
+  - [x] Explain Level toggle (Simple / Standard / Detailed)
+  - [x] Language toggle (English / Hindi / Assamese)
+  - [x] Loading skeleton while waiting
+  - [x] `components/ResponseCard.tsx` — 4 fields + source citation
 - [ ] Firestore update on first Ask use (+10 readiness score)
-- [ ] Full flow tested on production:
-  - [ ] English response ✓
-  - [ ] Hindi response renders correctly ✓
-  - [ ] Assamese response verified by native speaker ✓
-  - [ ] Source citation appears ✓
-  - [ ] Explain level toggle changes response ✓
+- [x] Full flow tested on production:
+  - [x] English response ✓
+  - [x] Hindi response renders correctly ✓
+  - [x] Assamese response verified by native speaker ✓
+  - [x] Source citation appears ✓
+  - [x] Explain level toggle changes response ✓
 
 ### Commits
 - [ ] `chore: cloud run deployment - adk orchestrator live`
 - [ ] `feat: api route - next.js proxy to cloud run`
-- [ ] `feat: ask castit page - input, toggles, response card`
-- [ ] `test: verify hindi and assamese responses render correctly`
+- [ ] `feat: ask VotePilot page - input, toggles, response card`
+- [x] `test: verify hindi and assamese responses render correctly`
 
 ### Notes / Blockers
 ```
@@ -527,7 +527,7 @@ _________________________________________________________________
 **Readiness Score Audit**
 - [ ] Onboarding complete → +20 ✓
 - [ ] Simulator complete → +25 ✓
-- [ ] Ask CastIt first use → +10 ✓
+- [ ] Ask VotePilot first use → +10 ✓
 - [ ] Myth Buster all viewed → +15 ✓
 - [ ] No duplicate score additions on re-visit ✓
 - [ ] Dashboard ring reflects real accumulated total ✓
@@ -544,7 +544,7 @@ _________________________________________________________________
 - [ ] Landing page ✓
 - [ ] Onboarding page ✓
 - [ ] Dashboard page ✓
-- [ ] Ask CastIt page ✓
+- [ ] Ask VotePilot page ✓
 - [ ] Simulator page ✓
 - [ ] Elections page ✓
 - [ ] Myth Buster page ✓
@@ -606,7 +606,7 @@ _________________________________________________________________
 - [ ] Demo Flow section included
 - [ ] `/docs/screenshots/` folder added:
   - [ ] Dashboard with readiness score
-  - [ ] Ask CastIt with Assamese response
+  - [ ] Ask VotePilot with Assamese response
   - [ ] Simulator mid-flow
   - [ ] Elections page
 
@@ -730,7 +730,7 @@ Use this if something spills from one day to the next.
 | 0:00 | Open landing — show hero + 3 persona buttons | [ ] rehearsed |
 | 0:15 | Click "First-Time Voter" — auto-fill onboarding | [ ] rehearsed |
 | 0:30 | Show dashboard — readiness ring, checklist, next action | [ ] rehearsed |
-| 0:45 | Ask CastIt — "What happens inside the polling booth?" | [ ] rehearsed |
+| 0:45 | Ask VotePilot — "What happens inside the polling booth?" | [ ] rehearsed |
 | 1:00 | Switch explain level Standard → Simple | [ ] rehearsed |
 | 1:10 | Switch language to Assamese — show response + citation | [ ] rehearsed |
 | 1:20 | Simulator — 3 stages + one dead-end branch | [ ] rehearsed |
@@ -739,7 +739,7 @@ Use this if something spills from one day to the next.
 | 2:00 | Close on dashboard — higher readiness score | [ ] rehearsed |
 
 **Closing line (memorize this):**
-> "CastIt uses a multi-agent RAG pipeline on Vertex AI — every answer is grounded in official ECI documents, not just model training data. It's not a chatbot. It's a civic knowledge system."
+> "VotePilot uses a multi-agent RAG pipeline on Vertex AI — every answer is grounded in official ECI documents, not just model training data. It's not a chatbot. It's a civic knowledge system."
 
 ---
 

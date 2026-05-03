@@ -1,130 +1,327 @@
 "use client"
 
 import Link from "next/link"
-import { CheckCircle2, ShieldCheck, MapPin } from "lucide-react"
+import { Navbar } from "@/components/Navbar"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Navbar */}
-      <nav className="border-b bg-white/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
-              V
-            </div>
-            <span className="font-bold text-xl tracking-tight text-gray-900">VotePilot AI</span>
-          </div>
-          <div>
-            <Link 
-              href="/onboarding" 
-              className="text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 px-4 py-2 rounded-full transition-colors"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen" style={{ background: '#F5F0E8' }}>
+      <Navbar />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <main>
         {/* Hero Section */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
-            Understand elections <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-              without the confusion.
-            </span>
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-600 mb-10 leading-relaxed">
-            Your neutral, intelligent election education companion. Learn the process, find your booth, and get ready for polling day in minutes.
-          </p>
-        </div>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12 sm:pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="page-enter">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 mb-6">
+                <span className="badge badge-new">🆕 AI-Powered Civic Education</span>
+              </div>
+
+              <h1
+                style={{
+                  fontFamily: 'Plus Jakarta Sans, sans-serif',
+                  fontWeight: 800,
+                  fontSize: 'clamp(36px, 5vw, 56px)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.02em',
+                  color: '#1A1A2E',
+                }}
+                className="mb-6"
+              >
+                Vote with{" "}
+                <span style={{ color: '#FF6B2B' }}>Confidence,</span>
+                <br />
+                Not Confusion.
+              </h1>
+
+              <p
+                style={{ fontFamily: 'Inter, sans-serif', color: '#6B7280', fontSize: '18px', lineHeight: 1.6 }}
+                className="mb-8 max-w-xl"
+              >
+                Your neutral, intelligent election education companion. Learn the process,
+                find your booth, and get ready for polling day — in minutes.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link href="/onboarding" className="btn-primary text-center" style={{ padding: '14px 32px', fontSize: '16px' }}>
+                  Get Started Free →
+                </Link>
+                <Link href="/simulator" className="btn-secondary text-center" style={{ padding: '14px 32px', fontSize: '16px' }}>
+                  Try Simulator
+                </Link>
+              </div>
+
+              {/* Stats */}
+              <div className="flex flex-wrap gap-6">
+                {[
+                  { value: "3", label: "Languages" },
+                  { value: "7+", label: "Learning Modules" },
+                  { value: "100%", label: "Free & Neutral" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <div
+                      style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '24px', color: '#1A1A2E' }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#6B7280' }}>
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Floating Hero Card */}
+            <div className="relative hidden lg:flex justify-center items-center">
+              <div
+                className="card"
+                style={{
+                  width: '320px',
+                  animation: 'float 4s ease-in-out infinite',
+                }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      background: '#FFF0E8',
+                      border: '2px solid #FF6B2B',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                    }}
+                  >
+                    🗳️
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '16px', color: '#1A1A2E' }}>
+                      Voter Readiness
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#6B7280' }}>Pre-Election Preparation</div>
+                  </div>
+                </div>
+
+                {/* Mini readiness bar */}
+                <div className="mb-4">
+                  <div className="flex justify-between mb-1">
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: '#1A1A2E' }}>Score</span>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#22C55E' }}>85%</span>
+                  </div>
+                  <div style={{ background: '#E5E0D8', borderRadius: '8px', height: '10px', border: '2px solid #1A1A2E', overflow: 'hidden' }}>
+                    <div style={{ background: '#22C55E', width: '85%', height: '100%', borderRadius: '6px' }} />
+                  </div>
+                </div>
+
+                {[
+                  { label: "✅ Voter ID verified", done: true },
+                  { label: "✅ Booth location found", done: true },
+                  { label: "⬜ Simulator completed", done: false },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '10px',
+                      border: `2px solid ${item.done ? '#86EFAC' : '#1A1A2E'}`,
+                      background: item.done ? '#DCFCE7' : '#FFFFFF',
+                      marginBottom: 8,
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: '#1A1A2E',
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Demo Personas Section */}
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-8 sm:p-12 border border-gray-100 mb-24">
-          <h2 className="text-2xl font-bold text-center mb-8 text-gray-900">Choose a demo persona to start</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <Link 
-              href="/onboarding?persona=first-time"
-              className="group relative bg-gray-50 hover:bg-blue-50 border-2 border-transparent hover:border-blue-200 rounded-2xl p-6 transition-all duration-200 text-center flex flex-col items-center gap-4 hover:shadow-md"
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div
+            className="card"
+            style={{ background: '#FFFFFF' }}
+          >
+            <h2
+              style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '24px', color: '#1A1A2E', textAlign: 'center', marginBottom: '8px' }}
             >
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                🎓
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">First-Time Voter</h3>
-                <p className="text-sm text-gray-500">I&apos;ve just turned 18 and never voted before.</p>
-              </div>
-            </Link>
-
-            <Link 
-              href="/onboarding?persona=moved"
-              className="group relative bg-gray-50 hover:bg-emerald-50 border-2 border-transparent hover:border-emerald-200 rounded-2xl p-6 transition-all duration-200 text-center flex flex-col items-center gap-4 hover:shadow-md"
-            >
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                📦
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Recently Moved</h3>
-                <p className="text-sm text-gray-500">I changed my city and need to update my details.</p>
-              </div>
-            </Link>
-
-            <Link 
-              href="/onboarding?persona=last-minute"
-              className="group relative bg-gray-50 hover:bg-amber-50 border-2 border-transparent hover:border-amber-200 rounded-2xl p-6 transition-all duration-200 text-center flex flex-col items-center gap-4 hover:shadow-md"
-            >
-              <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                ⏱️
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">Last-Minute Learner</h3>
-                <p className="text-sm text-gray-500">Election is tomorrow, give me the summary!</p>
-              </div>
-            </Link>
+              Choose a demo persona to start instantly
+            </h2>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6B7280', textAlign: 'center', marginBottom: '32px' }}>
+              Click to auto-fill your profile and jump straight to your personalized dashboard.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              {[
+                {
+                  href: "/onboarding?persona=first-time",
+                  emoji: "🎓",
+                  title: "First-Time Voter",
+                  desc: "Just turned 18 and never voted before.",
+                  bg: '#FFF0E8',
+                  border: '#FF6B2B',
+                  shadow: '#FF6B2B',
+                },
+                {
+                  href: "/onboarding?persona=moved",
+                  emoji: "📦",
+                  title: "Recently Moved",
+                  desc: "Changed city and need to update my details.",
+                  bg: '#DCFCE7',
+                  border: '#86EFAC',
+                  shadow: '#86EFAC',
+                },
+                {
+                  href: "/onboarding?persona=last-minute",
+                  emoji: "⚡",
+                  title: "Last-Minute Learner",
+                  desc: "Election is tomorrow. Give me the essentials!",
+                  bg: '#FEF3C7',
+                  border: '#FCD34D',
+                  shadow: '#FCD34D',
+                },
+              ].map((persona) => (
+                <Link
+                  key={persona.href}
+                  href={persona.href}
+                  className="group flex flex-col items-center text-center gap-4 p-6 transition-all duration-150"
+                  style={{
+                    background: persona.bg,
+                    border: `2px solid ${persona.border}`,
+                    borderRadius: '16px',
+                    boxShadow: `4px 4px 0px ${persona.shadow}`,
+                    textDecoration: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = 'translate(-2px, -2px)'
+                    ;(e.currentTarget as HTMLElement).style.boxShadow = `6px 6px 0px ${persona.shadow}`
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = ''
+                    ;(e.currentTarget as HTMLElement).style.boxShadow = `4px 4px 0px ${persona.shadow}`
+                  }}
+                >
+                  <div style={{ fontSize: '40px', lineHeight: 1 }}>{persona.emoji}</div>
+                  <div>
+                    <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '16px', color: '#1A1A2E', marginBottom: '4px' }}>
+                      {persona.title}
+                    </h3>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6B7280' }}>{persona.desc}</p>
+                  </div>
+                  <span style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '13px', color: '#FF6B2B' }}>
+                    Start with this profile →
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* How It Works Section */}
-        <div className="mb-24">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">How VotePilot Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <CheckCircle2 className="w-6 h-6" />
+        {/* How It Works */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <h2 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: 'clamp(22px, 3vw, 32px)', color: '#1A1A2E', textAlign: 'center', marginBottom: '48px', letterSpacing: '-0.01em' }}>
+            How VotePilot <span style={{ color: '#FF6B2B' }}>Works</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                step: "01",
+                emoji: "📝",
+                title: "Tell us your status",
+                desc: "Answer 4 quick questions so we can personalize your dashboard, checklist, and voter readiness score.",
+              },
+              {
+                step: "02",
+                emoji: "💬",
+                title: "Ask any question",
+                desc: "Chat with VotePilot AI in English, Hindi, or Assamese. Adjust the explanation depth to your comfort level.",
+              },
+              {
+                step: "03",
+                emoji: "🏫",
+                title: "Walk into the booth",
+                desc: "Practice the exact voting sequence with our interactive Booth Day Simulator. Be prepared, not surprised.",
+              },
+            ].map((card) => (
+              <div key={card.step} className="card relative overflow-hidden">
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    right: '-5px',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    fontWeight: 800,
+                    fontSize: '80px',
+                    color: '#F5F0E8',
+                    lineHeight: 1,
+                    userSelect: 'none',
+                  }}
+                >
+                  {card.step}
+                </div>
+                <div style={{ fontSize: '36px', marginBottom: '16px' }}>{card.emoji}</div>
+                <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '18px', color: '#1A1A2E', marginBottom: '8px' }}>
+                  {card.title}
+                </h3>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6B7280', lineHeight: 1.6 }}>
+                  {card.desc}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">1. Tell us your status</h3>
-              <p className="text-gray-600">Answer 4 quick questions so we can personalize your dashboard and checklist.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
-              <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">2. Ask any question</h3>
-              <p className="text-gray-600">Chat with VotePilot in 3 languages and adjust the explanation level to your liking.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                <MapPin className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">3. Walk into the booth</h3>
-              <p className="text-gray-600">Use our interactive Booth Day Simulator to practice the exact sequence of events.</p>
+            ))}
+          </div>
+        </section>
+
+        {/* Features Strip */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="card card-primary">
+            <h3 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '18px', color: '#1A1A2E', marginBottom: '20px', textAlign: 'center' }}>
+              Everything you need to vote with confidence
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                { emoji: "🔵", text: "Personalized Voter Roadmap" },
+                { emoji: "🤖", text: "AI Q&A — 3 explain levels" },
+                { emoji: "🌐", text: "English, Hindi & Assamese" },
+                { emoji: "🗳️", text: "Booth Day Simulator" },
+                { emoji: "📊", text: "Live Elections Tracker" },
+                { emoji: "🔍", text: "Myth Buster — Fact Cards" },
+              ].map((f) => (
+                <div key={f.text} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', background: '#FFFFFF', border: '2px solid #FF6B2B', borderRadius: '10px' }}>
+                  <span style={{ fontSize: '18px' }}>{f.emoji}</span>
+                  <span style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 600, fontSize: '13px', color: '#1A1A2E' }}>
+                    {f.text}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center text-gray-500">
-          <p className="mb-4 text-lg font-semibold text-gray-700 flex items-center justify-center gap-2">
+      <footer style={{ background: '#FFFFFF', borderTop: '2px solid #1A1A2E', marginTop: '24px', padding: '40px 16px' }}>
+        <div className="max-w-7xl mx-auto text-center">
+          <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '18px', color: '#1A1A2E', marginBottom: '8px' }}>
             Built for Hack2skill PromptWars 🇮🇳
           </p>
-          <p className="text-sm">Information provided is neutral and strictly educational.</p>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#6B7280' }}>
+            Information provided is neutral, non-partisan, and strictly educational. Powered by Gemini + Vertex AI.
+          </p>
         </div>
       </footer>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-12px); }
+        }
+      `}</style>
     </div>
   )
 }
