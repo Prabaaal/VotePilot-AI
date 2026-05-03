@@ -47,6 +47,26 @@ export async function askVotePilot(
   explainLevel: ExplainLevel = "standard",
   language: Language = "english"
 ): Promise<VotePilotResponse> {
+  const orchestratorUrl = process.env.NEXT_PUBLIC_CLOUD_RUN_ORCHESTRATOR_URL
+  
+  // If ADK backend is deployed and configured, route traffic there
+  if (orchestratorUrl && orchestratorUrl !== "") {
+    try {
+      const res = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, explainLevel, language })
+      })
+      if (res.ok) {
+        return await res.json()
+      }
+      console.warn("ADK backend failed, falling back to direct Gemini API...")
+    } catch (e) {
+      console.warn("Failed to reach ADK backend API route:", e)
+    }
+  }
+
+  // Fallback: Direct Gemini Call (Original functionality)
   const apiKey = process.env.NEXT_PUBLIC_GEMINI_KEY
   if (!apiKey || apiKey === "your_gemini_key") {
     // Return a demo response when no API key is configured
