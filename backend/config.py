@@ -28,8 +28,8 @@ else:
         os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
         print("[config] No API key or key file — using Cloud Run ADC")
 
-# Model name (works with both Vertex AI and Gemini Developer API)
-MODEL = "gemini-1.5-flash"
+# Model name — confirmed available via this API key
+MODEL = "gemini-2.0-flash"
 
 # ── Datastore ────────────────────────────────────────────────────────────────
 # Discovery Engine uses global endpoint regardless of Vertex AI location
