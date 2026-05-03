@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const orchestratorUrl = process.env.NEXT_PUBLIC_CLOUD_RUN_ORCHESTRATOR_URL
+    const orchestratorUrl = process.env.NEXT_PUBLIC_CLOUD_RUN_ORCHESTRATOR_URL || process.env.CLOUD_RUN_ORCHESTRATOR_URL
     
     if (!orchestratorUrl || orchestratorUrl === "") {
       return NextResponse.json(
