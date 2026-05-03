@@ -1,0 +1,388 @@
+Here it is:
+
+```json
+{
+  "simulator": {
+    "startStage": "arrival",
+    "stages": {
+      "arrival": {
+        "id": "arrival",
+        "title": "You've Arrived at the Polling Booth",
+        "description": "It's election day. You've reached your assigned polling station. There's a queue outside and election officers are managing the crowd.",
+        "illustration": "🏫",
+        "choices": [
+          {
+            "id": "join_queue",
+            "label": "Join the queue",
+            "next": "identity_check"
+          },
+          {
+            "id": "lost",
+            "label": "I don't know which booth is mine",
+            "next": "branch_wrong_booth"
+          },
+          {
+            "id": "nervous",
+            "label": "I'm nervous, what do I do?",
+            "next": "branch_nervous"
+          }
+        ]
+      },
+
+      "branch_wrong_booth": {
+        "id": "branch_wrong_booth",
+        "type": "info",
+        "title": "Finding Your Correct Booth",
+        "description": "Every voter is assigned to a specific booth based on your address. You can find yours by checking your EPIC card, or asking the Booth Level Officer (BLO) present outside.",
+        "tip": "Your booth number is printed on your Voter ID. You can also check on the Voter Helpline app or call 1950.",
+        "illustration": "🗺️",
+        "choices": [
+          {
+            "id": "found_booth",
+            "label": "Found it, joining the queue now",
+            "next": "identity_check"
+          }
+        ]
+      },
+
+      "branch_nervous": {
+        "id": "branch_nervous",
+        "type": "info",
+        "title": "It's Okay to Be Nervous",
+        "description": "First-time voting feels overwhelming but the process is simple. Officers are there to help, not judge. You have every right to ask for assistance.",
+        "tip": "If you need help understanding the machine, you can ask the Presiding Officer inside — they're required to assist you.",
+        "illustration": "😌",
+        "choices": [
+          {
+            "id": "feeling_ready",
+            "label": "Okay I'm ready, joining the queue",
+            "next": "identity_check"
+          }
+        ]
+      },
+
+      "identity_check": {
+        "id": "identity_check",
+        "title": "Identity Verification",
+        "description": "You're at the front of the queue. The polling officer asks for your Voter ID (EPIC card) to verify your name on the electoral roll.",
+        "illustration": "🪪",
+        "choices": [
+          {
+            "id": "have_epic",
+            "label": "I have my Voter ID",
+            "next": "name_found"
+          },
+          {
+            "id": "no_epic",
+            "label": "I forgot my Voter ID",
+            "next": "branch_no_epic"
+          },
+          {
+            "id": "name_missing",
+            "label": "My name isn't on the list",
+            "next": "branch_name_missing"
+          }
+        ]
+      },
+
+      "branch_no_epic": {
+        "id": "branch_no_epic",
+        "type": "info",
+        "title": "No Voter ID? You May Still Vote",
+        "description": "ECI allows 12 alternative photo ID documents if you don't have your EPIC card. These include Aadhaar, Passport, Driving License, PAN card, MNREGA job card, and more.",
+        "tip": "You cannot vote without any photo ID at all. But Voter ID is not the only option.",
+        "illustration": "📄",
+        "choices": [
+          {
+            "id": "have_alternative",
+            "label": "I have an alternative ID",
+            "next": "name_found"
+          },
+          {
+            "id": "no_id_at_all",
+            "label": "I have no ID at all",
+            "next": "branch_no_id_at_all"
+          }
+        ]
+      },
+
+      "branch_no_id_at_all": {
+        "id": "branch_no_id_at_all",
+        "type": "dead_end",
+        "title": "Unfortunately You Cannot Vote Today",
+        "description": "Without any valid photo ID, the polling officer cannot verify your identity and you will not be permitted to cast your vote. This is to protect the integrity of the election.",
+        "tip": "For future elections, apply for your EPIC card at voterportal.eci.gov.in well in advance.",
+        "illustration": "❌",
+        "choices": [
+          {
+            "id": "restart",
+            "label": "Start over",
+            "next": "arrival"
+          }
+        ]
+      },
+
+      "branch_name_missing": {
+        "id": "branch_name_missing",
+        "type": "info",
+        "title": "Your Name Isn't on the List",
+        "description": "If your name doesn't appear in the electoral roll at that booth, you cannot vote there even with valid ID. This could happen if you recently moved or your registration wasn't processed.",
+        "tip": "You can file a complaint with the Returning Officer. For future elections, always verify your name at electoralsearch.eci.gov.in before polling day.",
+        "illustration": "📋",
+        "choices": [
+          {
+            "id": "restart",
+            "label": "Start over",
+            "next": "arrival"
+          }
+        ]
+      },
+
+      "name_found": {
+        "id": "name_found",
+        "title": "Name Verified ✓",
+        "description": "The officer finds your name on the electoral roll, marks it, and asks you to proceed to the next table for finger inking.",
+        "illustration": "✅",
+        "choices": [
+          {
+            "id": "proceed",
+            "label": "Proceed to inking",
+            "next": "inking"
+          }
+        ]
+      },
+
+      "inking": {
+        "id": "inking",
+        "title": "Finger Inking",
+        "description": "An officer applies indelible ink on the index finger of your left hand. This ink cannot be washed off for several days and proves you've already voted — preventing double voting.",
+        "illustration": "🖊️",
+        "choices": [
+          {
+            "id": "inked",
+            "label": "Done, what's next?",
+            "next": "enter_booth"
+          },
+          {
+            "id": "already_inked",
+            "label": "I already have ink on my finger",
+            "next": "branch_already_inked"
+          }
+        ]
+      },
+
+      "branch_already_inked": {
+        "id": "branch_already_inked",
+        "type": "info",
+        "title": "Already Inked Means Already Voted",
+        "description": "If you already have indelible ink on your finger, it means a vote has already been cast in your name. This is a serious issue and should be reported immediately to the Presiding Officer.",
+        "tip": "This could indicate voter fraud. You have the right to file a complaint. Contact the Election Commission helpline at 1950.",
+        "illustration": "⚠️",
+        "choices": [
+          {
+            "id": "restart",
+            "label": "Start over",
+            "next": "arrival"
+          }
+        ]
+      },
+
+      "enter_booth": {
+        "id": "enter_booth",
+        "title": "Entering the Voting Compartment",
+        "description": "You're handed a voter slip and directed to the voting compartment — a small private space with the EVM (Electronic Voting Machine). No phones allowed inside.",
+        "illustration": "🚪",
+        "choices": [
+          {
+            "id": "enter",
+            "label": "Enter the compartment",
+            "next": "cast_vote"
+          },
+          {
+            "id": "phone_question",
+            "label": "Can I take my phone inside?",
+            "next": "branch_phone"
+          }
+        ]
+      },
+
+      "branch_phone": {
+        "id": "branch_phone",
+        "type": "info",
+        "title": "No Phones Inside the Booth",
+        "description": "You are not allowed to carry your phone into the voting compartment. This prevents photographing the ballot which could compromise the secrecy of your vote.",
+        "tip": "Leave your phone with a trusted person outside or in your pocket — just don't take it into the compartment.",
+        "illustration": "📵",
+        "choices": [
+          {
+            "id": "understood",
+            "label": "Understood, entering now",
+            "next": "cast_vote"
+          }
+        ]
+      },
+
+      "cast_vote": {
+        "id": "cast_vote",
+        "title": "Casting Your Vote",
+        "description": "The EVM shows a list of candidates with their party symbols. Press the button next to the candidate you want to vote for. The machine beeps and a light confirms your vote.",
+        "illustration": "🗳️",
+        "choices": [
+          {
+            "id": "voted",
+            "label": "I pressed the button and heard a beep",
+            "next": "vvpat"
+          },
+          {
+            "id": "confused_evm",
+            "label": "I'm confused by the machine",
+            "next": "branch_confused_evm"
+          },
+          {
+            "id": "nota",
+            "label": "I don't want to vote for anyone",
+            "next": "branch_nota"
+          }
+        ]
+      },
+
+      "branch_confused_evm": {
+        "id": "branch_confused_evm",
+        "type": "info",
+        "title": "Confused by the EVM?",
+        "description": "The EVM is simple — find your candidate's name and party symbol, then press the blue button next to it. If you're still confused, step out and ask the Presiding Officer for a demonstration. They must help you.",
+        "tip": "You cannot accidentally vote for the wrong person — each button only activates one candidate.",
+        "illustration": "🖲️",
+        "choices": [
+          {
+            "id": "understood",
+            "label": "Got it, casting my vote now",
+            "next": "cast_vote"
+          }
+        ]
+      },
+
+      "branch_nota": {
+        "id": "branch_nota",
+        "type": "info",
+        "title": "You Can Vote NOTA",
+        "description": "NOTA stands for None of the Above. It's the last option on every EVM. If you don't want to vote for any candidate, you can press NOTA — your vote still counts as participation.",
+        "tip": "NOTA votes are counted but do not affect the winner. The candidate with the most votes wins regardless.",
+        "illustration": "🚫",
+        "choices": [
+          {
+            "id": "vote_nota",
+            "label": "I'll press NOTA",
+            "next": "vvpat"
+          },
+          {
+            "id": "reconsider",
+            "label": "Actually I'll vote for a candidate",
+            "next": "cast_vote"
+          }
+        ]
+      },
+
+      "vvpat": {
+        "id": "vvpat",
+        "title": "VVPAT Slip Appears",
+        "description": "After pressing the button, a paper slip appears in the VVPAT (Voter Verified Paper Audit Trail) machine for 7 seconds showing the candidate name and symbol you voted for. This is your proof.",
+        "illustration": "🧾",
+        "choices": [
+          {
+            "id": "confirmed",
+            "label": "I saw the slip, vote confirmed",
+            "next": "exit"
+          },
+          {
+            "id": "wrong_slip",
+            "label": "The slip shows the wrong candidate",
+            "next": "branch_wrong_slip"
+          }
+        ]
+      },
+
+      "branch_wrong_slip": {
+        "id": "branch_wrong_slip",
+        "type": "info",
+        "title": "Wrong Candidate on VVPAT?",
+        "description": "If the VVPAT slip shows a different candidate than the one you pressed, immediately call the Presiding Officer without leaving the booth. This is a serious EVM malfunction and must be reported on the spot.",
+        "tip": "Do not leave the booth before reporting this. Once you exit, the complaint may not be accepted.",
+        "illustration": "🚨",
+        "choices": [
+          {
+            "id": "reported",
+            "label": "I've reported it to the officer",
+            "next": "exit"
+          }
+        ]
+      },
+
+      "exit": {
+        "id": "exit",
+        "type": "completion",
+        "title": "You've Successfully Voted! 🎉",
+        "description": "You exit the booth. Your vote has been cast and counted. The ink on your finger is your badge of participation in Indian democracy.",
+        "tip": "Results are typically declared within 24-48 hours of polling day closing. You can follow live counts on ECI's official website.",
+        "illustration": "🇮🇳",
+        "choices": [
+          {
+            "id": "restart",
+            "label": "Try a different scenario",
+            "next": "arrival"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+---
+
+Here's how your simulator component consumes this — pure state machine, no AI calls needed:
+
+```typescript
+// useSimulator.ts
+import { useState } from "react"
+import simulatorData from "@/data/simulator.json"
+
+export function useSimulator() {
+  const [currentStageId, setCurrentStageId] = useState("arrival")
+  const [history, setHistory] = useState<string[]>([])
+
+  const currentStage = simulatorData.simulator.stages[currentStageId]
+
+  function choose(nextStageId: string) {
+    setHistory(prev => [...prev, currentStageId])
+    setCurrentStageId(nextStageId)
+  }
+
+  function goBack() {
+    if (history.length === 0) return
+    const prev = [...history]
+    const last = prev.pop()!
+    setHistory(prev)
+    setCurrentStageId(last)
+  }
+
+  function restart() {
+    setHistory([])
+    setCurrentStageId("arrival")
+  }
+
+  return { currentStage, choose, goBack, restart, canGoBack: history.length > 0 }
+}
+```
+
+---
+
+Three things to note:
+
+- **No AI calls in the simulator** — it's fully static JSON, so it's instant and never breaks
+- The `history` stack gives you a free **back button** — small UX detail judges notice
+- `type: "dead_end"` and `type: "completion"` stages let your UI render differently (red tint for dead ends, celebratory UI for completion)
+
+Your UI just reads `currentStage` and maps `choices` to buttons. Drop this into Antigravity and it'll basically build the component for you from this structure.
+
+You're pretty much fully scaffolded now. Go build it!

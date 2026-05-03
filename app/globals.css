@@ -271,3 +271,116 @@ h1, h2, h3, h4, h5, h6 {
 .badge-ongoing    { background: #FEF3C7; color: #92400E; border-color: #FCD34D; }
 .badge-completed  { background: #DCFCE7; color: #166534; border-color: #86EFAC; }
 .badge-info       { background: #F5F0E8; color: #1A1A2E; border-color: #1A1A2E; }
+.badge-danger     { background: #FEE2E2; color: #B91C1C; border-color: #FCA5A5; }
+
+/* Input */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border: 2px solid #1A1A2E;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: #1A1A2E;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  display: block;
+}
+
+.input:focus {
+  box-shadow: 4px 4px 0px #FF6B2B;
+  border-color: #FF6B2B;
+}
+
+.input::placeholder {
+  color: #9CA3AF;
+}
+
+/* Label */
+.label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1A1A2E;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Toggle group for yes/no */
+.toggle-group {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-option {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  border: 2px solid #1A1A2E;
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: #FFFFFF;
+  transition: all 0.15s ease;
+  color: #1A1A2E;
+}
+
+.toggle-option:hover {
+  background: #F5F0E8;
+}
+
+.toggle-option.active {
+  background: #FF6B2B;
+  color: #FFFFFF;
+  box-shadow: 3px 3px 0px #1A1A2E;
+  transform: translate(-1px, -1px);
+}
+
+/* Pill toggle (for explain level / language) */
+.pill-toggle {
+  display: flex;
+  background: #FFFFFF;
+  border: 2px solid #1A1A2E;
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.pill-option {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #6B7280;
+  border: none;
+  background: transparent;
+}
+
+.pill-option:hover {
+  background: #F5F0E8;
+  color: #1A1A2E;
+}
+
+.pill-option.active {
+  background: #FF6B2B;
+  color: #FFFFFF;
+  box-shadow: 2px 2px 0px #1A1A2E;
+}
+
+/* Stagger / slide-up animation for response card */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.stagger {
+  animation: slideUp 0.25s ease forwards;
+  opacity: 0;
+}
