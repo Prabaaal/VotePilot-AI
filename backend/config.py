@@ -10,7 +10,10 @@ KEY_FILE = "gcp_key.json"
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 GOOGLE_APPLICATION_CREDENTIALS = os.path.join(CURRENT_DIR, KEY_FILE)
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
+if os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
+else:
+    print("Warning: gcp_key.json not found. Using default application credentials.")
 
 # Full datastore resource name — ADK needs this format
 DATASTORE_RESOURCE = (

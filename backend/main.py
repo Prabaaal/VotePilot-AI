@@ -66,55 +66,74 @@ user_state: {req.user_profile.get("state", "India") if req.user_profile else "In
 first_time_voter: {req.user_profile.get("firstTimeVoter", True) if req.user_profile else True}
         """.strip()
 
-        # Create a session for this request
-        session = await session_service.create_session(
-            app_name="votepilot",
-            user_id="anonymous",
-        )
+        print(f"Orchestrating request: {req.question}")
 
-        # Run the orchestrator
+        # Run the orchestrator without session history for stateless request
         response_text = ""
         async for event in ask_runner.run_async(
             user_id="anonymous",
-            session_id=session.id,
+            session_id=f"stateless-{os.urandom(8).hex()}", # Unique session every time
             new_message=message
         ):
             if event.is_final_response():
                 response_text = event.content.parts[0].text
                 break
 
+        print(f"Raw response from agent: {response_text}")
+
+        if not response_text:
+            return {"error": "No response from agents", "answer": "I'm sorry, I couldn't generate an answer right now."}
+
         # Parse JSON response from formatter agent
         import json, re
-        clean = re.sub(r"```json|```", "", response_text).strip()
-        return json.loads(clean)
+        try:
+            clean = re.sub(r"```json|```", "", response_text).strip()
+            return json.loads(clean)
+        except Exception as parse_err:
+            print(f"JSON Parse Error: {str(parse_err)}")
+            return {
+                "answer": response_text,
+                "whyItMatters": "",
+                "whatYouShouldDo": "",
+                "keepInMind": "",
+                "source": "ECI Documents"
+            }
 
     except Exception as e:
+        print(f"Endpoint Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/mythbuster")
 async def mythbuster(req: MythRequest):
     try:
-        session = await session_service.create_session(
-            app_name="votepilot",
-            user_id="anonymous",
-        )
-
+        print(f"MythBusting: {req.myth_statement}")
+        
         response_text = ""
         async for event in myth_runner.run_async(
             user_id="anonymous",
-            session_id=session.id,
+            session_id=f"myth-stateless-{os.urandom(8).hex()}",
             new_message=f"myth: {req.myth_statement}\nlanguage: {req.language}"
         ):
             if event.is_final_response():
                 response_text = event.content.parts[0].text
                 break
 
+        print(f"Raw response from myth agent: {response_text}")
+
+        if not response_text:
+            return {"error": "No response from myth agent", "answer": "I couldn't verify this myth."}
+
         import json, re
-        clean = re.sub(r"```json|```", "", response_text).strip()
-        return json.loads(clean)
+        try:
+            clean = re.sub(r"```json|```", "", response_text).strip()
+            return json.loads(clean)
+        except Exception as parse_err:
+            print(f"Myth Parse Error: {str(parse_err)}")
+            return {"answer": response_text, "verdict": "unknown"}
 
     except Exception as e:
+        print(f"Myth Endpoint Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
