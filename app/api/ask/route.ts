@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const response = await fetch(`${orchestratorUrl.replace(/\/$/, "")}/api/ask`, {
+    const response = await fetch(`${orchestratorUrl.replace(/\/$/, "")}/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)

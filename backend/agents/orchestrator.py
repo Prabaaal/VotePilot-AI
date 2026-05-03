@@ -39,5 +39,5 @@ Never answer from your own knowledge. Always use the agents.
 Always call formatter_agent as the final step.
     """,
     # Sub-agents become tools for the orchestrator
-    agents=[rag_agent, search_agent, formatter_agent, mythbuster_agent],
+    sub_agents=[rag_agent, search_agent, formatter_agent, mythbuster_agent],
 )

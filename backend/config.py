@@ -1,9 +1,10 @@
 # backend/config.py
+import os
 
 PROJECT_ID = "votepilot-ai"
-LOCATION = "global"
+LOCATION = "asia-south1"
 DATASTORE_ID = "eci-documents_1777829976236"
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-1.5-flash"
 
 KEY_FILE = "gcp_key.json" 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))

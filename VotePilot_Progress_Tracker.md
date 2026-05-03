@@ -15,27 +15,27 @@
 | Start Date | _______________ |
 | Submission Deadline | _______________ |
 | GitHub Repo | github.com/prabaaal/VotePilot-AI |
-| Production URL | _______________ |
-| Cloud Run URL | _______________ |
+| Production URL | https://votepilot-frontend-74810085857.asia-south1.run.app |
+| Cloud Run URL | https://votepilot-backend-74810085857.asia-south1.run.app |
 
 ---
 
 ## Overall Progress
 
 ```
-Setup       [----------]   0%
-Day 1       [----------]   0%
-Day 2       [----------]   0%
+Setup       [██████████] 100%
+Day 1       [██████████] 100%
+Day 2       [██████████] 100%
 Day 3       [██████████] 100%
-Day 4       [----------]   0%
-Day 5       [----------]   0%
-Day 6       [----------]   0%
-Day 7       [----------]   0%
+Day 4       [██████████] 100%
+Day 5       [██████████] 100%
+Day 6       [██████████] 100%
+Day 7       [██████████] 100%
 Day 8       [----------]   0%
 Day 9       [----------]   0%
 Day 10      [----------]   0%
 ─────────────────────────────
-Total       [----------]   0%
+Total       [██████----]  60%
 ```
 
 > Update each bar manually: replace `-` with `█` as you progress.
@@ -239,22 +239,22 @@ _________________________________________________________________
 **Branch:** `feat/adk-agents`
 
 ### Tasks
-- [ ] GCP project fully configured
-- [ ] All APIs confirmed enabled
-- [ ] ECI PDFs downloaded and ready
-- [ ] Vertex AI Search app created: `VotePilot-search`
-- [ ] Datastore created: `eci-documents`
-- [ ] All 5 PDFs uploaded
-- [ ] Indexing started — start time: ___________
-- [ ] Backend folder scaffold created:
-  - [ ] `/backend/agents/` — empty agent files
-  - [ ] `/backend/prompts/system_prompt.txt` — Gemini system prompt
-  - [ ] `/backend/requirements.txt`
-  - [ ] `/backend/main.py` — empty FastAPI shell
-  - [ ] `/backend/config.py` — GCP constants
-  - [ ] `/backend/Dockerfile` — base Dockerfile
-- [ ] Indexing completed — verified with test search query in GCP console
-- [ ] Datastore ID noted: `eci-documents____________`
+- [x] GCP project fully configured
+- [x] All APIs confirmed enabled
+- [x] ECI PDFs downloaded and ready
+- [x] Vertex AI Search app created: `VotePilot-search`
+- [x] Datastore created: `eci-documents`
+- [x] All 5 PDFs uploaded
+- [x] Indexing started — start time: 2026-05-03T14:00:00Z
+- [x] Backend folder scaffold created:
+  - [x] `/backend/agents/` — empty agent files
+  - [x] `/backend/prompts/system_prompt.txt` — Gemini system prompt
+  - [x] `/backend/requirements.txt`
+  - [x] `/backend/main.py` — empty FastAPI shell
+  - [x] `/backend/config.py` — GCP constants
+  - [x] `/backend/Dockerfile` — base Dockerfile
+- [x] Indexing completed — verified with test search query in GCP console
+- [x] Datastore ID noted: `eci-documents_1777829976236`
 
 ### Commits
 - [ ] `chore: backend folder scaffold + adk project structure`
@@ -279,44 +279,44 @@ _________________________________________________________________
 **Branch:** `feat/adk-agents`
 
 ### Tasks
-- [ ] `config.py` — all GCP constants configured
-- [ ] RAG Agent (`rag_agent.py`):
-  - [ ] `search_eci_documents()` tool built
-  - [ ] Queries Vertex AI Search datastore
-  - [ ] Returns `{ retrieved_context, source_document, found }`
-  - [ ] Agent defined with correct description + instruction
-  - [ ] Tested with 3 sample factual questions ✓
-- [ ] Search Agent (`search_agent.py`):
-  - [ ] `search_live_election_data()` tool built
-  - [ ] Vertex AI grounding with Google Search working
-  - [ ] Returns `{ raw_answer, source_url, found }`
-  - [ ] Agent defined
-  - [ ] Tested with live election queries ✓
-- [ ] Formatter Agent (`formatter_agent.py`):
-  - [ ] `format_response()` tool built
-  - [ ] Applies explain level + language correctly
-  - [ ] Returns structured JSON (4 fields + source)
-  - [ ] JSON parse fallback working
-  - [ ] Tested all 3 levels × 3 languages = 9 combinations ✓
-- [ ] Myth Buster Agent (`mythbuster_agent.py`):
-  - [ ] `debunk_myth()` tool built
-  - [ ] Uses RAG agent internally
-  - [ ] Returns verdict + formatted response
-  - [ ] Tested with 3 myth statements ✓
-- [ ] Orchestrator (`orchestrator.py`):
-  - [ ] Routing logic: factual → RAG, live → Search
-  - [ ] Formatter always called last
-  - [ ] Sub-agents wired as tools
-- [ ] `main.py` — FastAPI app:
-  - [ ] `POST /ask` endpoint wired to orchestrator
-  - [ ] `POST /mythbuster` endpoint wired to myth agent
-  - [ ] `GET /health` returns 200
-- [ ] End-to-end local test:
-  - [ ] `curl POST /ask` returns structured JSON ✓
-  - [ ] Hindi response verified ✓
-  - [ ] Assamese response verified (native speaker check) ✓
-- [ ] Merge feat/adk-agents → dev → main
-- [ ] Tag: `v0.1`
+- [x] `config.py` — all GCP constants configured
+- [x] RAG Agent (`rag_agent.py`):
+  - [x] `search_eci_documents()` tool built
+  - [x] Queries Vertex AI Search datastore
+  - [x] Returns `{ retrieved_context, source_document, found }`
+  - [x] Agent defined with correct description + instruction
+  - [x] Tested with 3 sample factual questions ✓
+- [x] Search Agent (`search_agent.py`):
+  - [x] `search_live_election_data()` tool built
+  - [x] Vertex AI grounding with Google Search working
+  - [x] Returns `{ raw_answer, source_url, found }`
+  - [x] Agent defined
+  - [x] Tested with live election queries ✓
+- [x] Formatter Agent (`formatter_agent.py`):
+  - [x] `format_response()` tool built
+  - [x] Applies explain level + language correctly
+  - [x] Returns structured JSON (4 fields + source)
+  - [x] JSON parse fallback working
+  - [x] Tested all 3 levels × 3 languages = 9 combinations ✓
+- [x] Myth Buster Agent (`mythbuster_agent.py`):
+  - [x] `debunk_myth()` tool built
+  - [x] Uses RAG agent internally
+  - [x] Returns verdict + formatted response
+  - [x] Tested with 3 myth statements ✓
+- [x] Orchestrator (`orchestrator.py`):
+  - [x] Routing logic: factual → RAG, live → Search
+  - [x] Formatter always called last
+  - [x] Sub-agents wired as tools
+- [x] `main.py` — FastAPI app:
+  - [x] `POST /ask` endpoint wired to orchestrator
+  - [x] `POST /mythbuster` endpoint wired to myth agent
+  - [x] `GET /health` returns 200
+- [x] End-to-end local test:
+  - [x] `curl POST /ask` returns structured JSON ✓
+  - [x] Hindi response verified ✓
+  - [x] Assamese response verified (native speaker check) ✓
+- [x] Merge feat/adk-agents → dev → main
+- [x] Tag: `v0.1`
 
 ### Commits
 - [ ] `feat: rag agent - vertex ai search retrieval`
@@ -344,14 +344,14 @@ _________________________________________________________________
 **Branch:** `feat/ask-VotePilot`
 
 ### Tasks
-- [ ] Dockerfile finalized
-- [ ] Docker image built and pushed to Artifact Registry
-- [ ] Cloud Run service deployed: `VotePilot-backend`
-- [ ] Cloud Run URL noted: `https://_____________________.run.app`
-- [ ] `GET /health` returns 200 on production URL ✓
-- [ ] `CLOUD_RUN_ORCHESTRATOR_URL` added to `.env.local`
-- [ ] `app/api/ask/route.ts` built — Next.js proxy to Cloud Run
-- [ ] Error handling on API route (500 → friendly message)
+- [x] Dockerfile finalized
+- [x] Docker image built and pushed to Artifact Registry
+- [x] Cloud Run service deployed: `VotePilot-backend`
+- [x] Cloud Run URL noted: `https://votepilot-backend-74810085857.asia-south1.run.app`
+- [x] `GET /health` returns 200 on production URL ✓
+- [x] `CLOUD_RUN_ORCHESTRATOR_URL` added to `.env.local`
+- [x] `app/api/ask/route.ts` built — Next.js proxy to Cloud Run
+- [x] Error handling on API route (500 → friendly message)
 - [x] Ask VotePilot page (`/ask`) built:
   - [x] Text input with submit
   - [x] 5 preloaded example question chips
@@ -359,7 +359,7 @@ _________________________________________________________________
   - [x] Language toggle (English / Hindi / Assamese)
   - [x] Loading skeleton while waiting
   - [x] `components/ResponseCard.tsx` — 4 fields + source citation
-- [ ] Firestore update on first Ask use (+10 readiness score)
+- [x] Firestore update on first Ask use (+10 readiness score)
 - [x] Full flow tested on production:
   - [x] English response ✓
   - [x] Hindi response renders correctly ✓
@@ -392,44 +392,44 @@ _________________________________________________________________
 **Branch:** `feat/simulator`
 
 ### Tasks
-- [ ] `data/simulator.json` created — full state machine
-- [ ] All main stages present:
-  - [ ] arrival
-  - [ ] identity_check
-  - [ ] name_found
-  - [ ] inking
-  - [ ] enter_booth
-  - [ ] cast_vote
-  - [ ] vvpat
-  - [ ] exit (completion)
-- [ ] All branch stages present:
-  - [ ] branch_wrong_booth
-  - [ ] branch_nervous
-  - [ ] branch_no_epic
-  - [ ] branch_no_id_at_all (dead end)
-  - [ ] branch_name_missing (dead end)
-  - [ ] branch_already_inked (dead end)
-  - [ ] branch_phone
-  - [ ] branch_confused_evm
-  - [ ] branch_nota
-  - [ ] branch_wrong_slip
-- [ ] All `next` references verified — no broken links
-- [ ] All dead ends have `restart` → `arrival`
-- [ ] `lib/useSimulator.ts` hook built:
-  - [ ] `choose()` works
-  - [ ] `goBack()` works
-  - [ ] `restart()` works
-  - [ ] `canGoBack` boolean correct
-- [ ] `components/SimulatorStage.tsx` built:
-  - [ ] Normal stage renders correctly
-  - [ ] Info stage — blue tint + tip box
-  - [ ] Dead-end stage — red tint + restart message
-  - [ ] Completion stage — celebratory UI + 🇮🇳
-- [ ] Simulator page (`/simulator`) built
-- [ ] Back button shows/hides correctly
-- [ ] Progress indicator shows
-- [ ] On completion: Firestore readiness score +25
-- [ ] All branches manually walked through and tested ✓
+- [x] `data/simulator.json` created — full state machine
+- [x] All main stages present:
+  - [x] arrival
+  - [x] identity_check
+  - [x] name_found
+  - [x] inking
+  - [x] enter_booth
+  - [x] cast_vote
+  - [x] vvpat
+  - [x] exit (completion)
+- [x] All branch stages present:
+  - [x] branch_wrong_booth
+  - [x] branch_nervous
+  - [x] branch_no_epic
+  - [x] branch_no_id_at_all (dead end)
+  - [x] branch_name_missing (dead end)
+  - [x] branch_already_inked (dead end)
+  - [x] branch_phone
+  - [x] branch_confused_evm
+  - [x] branch_nota
+  - [x] branch_wrong_slip
+- [x] All `next` references verified — no broken links
+- [x] All dead ends have `restart` → `arrival`
+- [x] `lib/useSimulator.ts` hook built:
+  - [x] `choose()` works
+  - [x] `goBack()` works
+  - [x] `restart()` works
+  - [x] `canGoBack` boolean correct
+- [x] `components/SimulatorStage.tsx` built:
+  - [x] Normal stage renders correctly
+  - [x] Info stage — blue tint + tip box
+  - [x] Dead-end stage — red tint + restart message
+  - [x] Completion stage — celebratory UI + 🇮🇳
+- [x] Simulator page (`/simulator`) built
+- [x] Back button shows/hides correctly
+- [x] Progress indicator shows
+- [x] On completion: Firestore readiness score +25
+- [x] All branches manually walked through and tested ✓
 
 ### Commits
 - [ ] `feat: simulator data - full state machine json`
