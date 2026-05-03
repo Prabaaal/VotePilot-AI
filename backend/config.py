@@ -2,30 +2,39 @@
 import os
 
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "votepilot-ai")
-# Gemini on Vertex AI is only available in us-central1 and a few other regions
-LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
 DATASTORE_ID = os.environ.get("DATASTORE_ID", "eci-documents_1777829976236")
 
-# Use Vertex AI via ADC (Cloud Run service account) — no API key needed
-# This must be set before any google-adk or google-genai imports
-os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "true")
-os.environ.setdefault("GOOGLE_CLOUD_PROJECT", PROJECT_ID)
-os.environ.setdefault("GOOGLE_CLOUD_LOCATION", LOCATION)
+# ── Auth strategy ─────────────────────────────────────────────────────────────
+# On Cloud Run: use GOOGLE_API_KEY for Gemini Developer API
+# Locally: fall back to gcp_key.json if present
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
-# Model — Vertex AI format (no "models/" prefix needed for gemini-1.5-flash)
+if GOOGLE_API_KEY:
+    # Use Gemini Developer API (generativelanguage.googleapis.com)
+    os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
+    # Ensure Vertex AI mode is OFF so ADK uses the API key path
+    os.environ.pop("GOOGLE_GENAI_USE_VERTEXAI", None)
+    print("[config] Using Gemini Developer API (GOOGLE_API_KEY)")
+else:
+    # Local dev: use service account key file if present
+    KEY_FILE = "gcp_key.json"
+    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+    _key_path = os.path.join(CURRENT_DIR, KEY_FILE)
+    if os.path.exists(_key_path):
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = _key_path
+        os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
+        print(f"[config] Using service account key: {_key_path}")
+    else:
+        os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
+        print("[config] No API key or key file — using Cloud Run ADC")
+
+# Model name (works with both Vertex AI and Gemini Developer API)
 MODEL = "gemini-1.5-flash"
 
-# Optional local key file — only used for local development
-KEY_FILE = "gcp_key.json"
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-_key_path = os.path.join(CURRENT_DIR, KEY_FILE)
-if os.path.exists(_key_path):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = _key_path
-    print(f"[config] Using service account key: {_key_path}")
-else:
-    print("[config] No gcp_key.json — using Cloud Run ADC / GOOGLE_GENAI_USE_VERTEXAI")
+# ── Datastore ────────────────────────────────────────────────────────────────
+# Discovery Engine uses global endpoint regardless of Vertex AI location
+LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
 
-# Full datastore resource name
 DATASTORE_RESOURCE = (
     f"projects/{PROJECT_ID}/locations/global"
     f"/collections/default_collection"
