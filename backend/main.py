@@ -1,10 +1,13 @@
 # backend/main.py
 
 import os
+import json
+import re
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
+from google.genai.types import Content, Part
 from agents.orchestrator import orchestrator
 from agents.mythbuster_agent import mythbuster_agent
 from google.adk.runners import Runner
@@ -13,18 +16,17 @@ import uvicorn
 
 app = FastAPI(title="VotePilot AI Backend")
 
-# Allow requests from your Next.js frontend
+# Allow requests from Next.js frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # tighten this to your Vercel URL in production
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ADK session service — manages conversation state
+# ADK session service and runners
 session_service = InMemorySessionService()
 
-# ADK runners — one per agent entry point
 ask_runner = Runner(
     agent=orchestrator,
     app_name="votepilot",
@@ -38,18 +40,35 @@ myth_runner = Runner(
 )
 
 
-# Request models
+# ── Request models ──────────────────────────────────────────────────────────
 class AskRequest(BaseModel):
     question: str
     explain_level: str = "standard"    # simple | standard | detailed
     language: str = "english"          # english | hindi | assamese
     user_profile: Optional[dict] = {}
 
+
 class MythRequest(BaseModel):
     myth_statement: str
     language: str = "english"
 
 
+def _parse_response(raw: str) -> dict:
+    """Strip markdown fences and parse JSON, with plain-text fallback."""
+    try:
+        clean = re.sub(r"```json|```", "", raw).strip()
+        return json.loads(clean)
+    except Exception:
+        return {
+            "answer": raw,
+            "whyItMatters": "",
+            "whatYouShouldDo": "",
+            "keepInMind": "",
+            "source": "ECI Documents"
+        }
+
+
+# ── Routes ──────────────────────────────────────────────────────────────────
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "votepilot-backend"}
@@ -58,83 +77,91 @@ def health():
 @app.post("/ask")
 async def ask(req: AskRequest):
     try:
-        # Build message with all context
-        message = f"""
-question: {req.question}
-explain_level: {req.explain_level}
-language: {req.language}
-user_state: {req.user_profile.get("state", "India") if req.user_profile else "India"}
-first_time_voter: {req.user_profile.get("firstTimeVoter", True) if req.user_profile else True}
-        """.strip()
+        message_text = (
+            f"question: {req.question}\n"
+            f"explain_level: {req.explain_level}\n"
+            f"language: {req.language}\n"
+            f"user_state: {req.user_profile.get('state', 'India') if req.user_profile else 'India'}\n"
+            f"first_time_voter: {req.user_profile.get('firstTimeVoter', True) if req.user_profile else True}"
+        )
 
-        print(f"Orchestrating request: {req.question}")
+        # ADK requires a Content object — not a raw string
+        new_message = Content(
+            parts=[Part(text=message_text)],
+            role="user"
+        )
 
-        # Run the orchestrator without session history for stateless request
+        # Each request gets a fresh session so history never corrupts types
+        session_id = f"ask-{os.urandom(8).hex()}"
+        await session_service.create_session(
+            app_name="votepilot",
+            user_id="anonymous",
+            session_id=session_id,
+        )
+
+        print(f"[ask] session={session_id} q={req.question!r}")
+
         response_text = ""
         async for event in ask_runner.run_async(
             user_id="anonymous",
-            session_id=f"stateless-{os.urandom(8).hex()}", # Unique session every time
-            new_message=message
+            session_id=session_id,
+            new_message=new_message,
         ):
             if event.is_final_response():
                 response_text = event.content.parts[0].text
                 break
 
-        print(f"Raw response from agent: {response_text}")
+        print(f"[ask] raw response: {response_text[:200]!r}")
 
         if not response_text:
-            return {"error": "No response from agents", "answer": "I'm sorry, I couldn't generate an answer right now."}
-
-        # Parse JSON response from formatter agent
-        import json, re
-        try:
-            clean = re.sub(r"```json|```", "", response_text).strip()
-            return json.loads(clean)
-        except Exception as parse_err:
-            print(f"JSON Parse Error: {str(parse_err)}")
             return {
-                "answer": response_text,
-                "whyItMatters": "",
-                "whatYouShouldDo": "",
-                "keepInMind": "",
-                "source": "ECI Documents"
+                "answer": "I'm sorry, I couldn't generate an answer right now.",
+                "error": "No response from agents"
             }
 
+        return _parse_response(response_text)
+
     except Exception as e:
-        print(f"Endpoint Error: {str(e)}")
+        print(f"[ask] ERROR: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/mythbuster")
 async def mythbuster(req: MythRequest):
     try:
-        print(f"MythBusting: {req.myth_statement}")
-        
+        new_message = Content(
+            parts=[Part(text=f"myth: {req.myth_statement}\nlanguage: {req.language}")],
+            role="user"
+        )
+
+        session_id = f"myth-{os.urandom(8).hex()}"
+        await session_service.create_session(
+            app_name="votepilot",
+            user_id="anonymous",
+            session_id=session_id,
+        )
+
+        print(f"[mythbuster] session={session_id} myth={req.myth_statement!r}")
+
         response_text = ""
         async for event in myth_runner.run_async(
             user_id="anonymous",
-            session_id=f"myth-stateless-{os.urandom(8).hex()}",
-            new_message=f"myth: {req.myth_statement}\nlanguage: {req.language}"
+            session_id=session_id,
+            new_message=new_message,
         ):
             if event.is_final_response():
                 response_text = event.content.parts[0].text
                 break
 
-        print(f"Raw response from myth agent: {response_text}")
+        print(f"[mythbuster] raw response: {response_text[:200]!r}")
 
         if not response_text:
-            return {"error": "No response from myth agent", "answer": "I couldn't verify this myth."}
+            return {"answer": "I couldn't verify this myth.", "verdict": "unknown"}
 
-        import json, re
-        try:
-            clean = re.sub(r"```json|```", "", response_text).strip()
-            return json.loads(clean)
-        except Exception as parse_err:
-            print(f"Myth Parse Error: {str(parse_err)}")
-            return {"answer": response_text, "verdict": "unknown"}
+        return _parse_response(response_text)
 
     except Exception as e:
-        print(f"Myth Endpoint Error: {str(e)}")
+        print(f"[mythbuster] ERROR: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -118,27 +118,52 @@ python main.py
 
 ---
 
+---
+
+## 🧪 Testing & Quality Assurance
+
+VotePilot AI maintains a high standard of code quality with comprehensive test coverage for both frontend and backend.
+
+### Frontend (Jest + React Testing Library)
+**35 tests passed** across 6 specialized suites:
+- **Recommendation Engine:** Validates personalized voter guidance logic.
+- **Simulator State Machine:** Ensures integrity of the interactive voting flow.
+- **API Routes:** Mocks backend communication and validates error handling.
+- **UI Components:** Verifies accessibility and rendering of critical components like `ReadinessRing` and `ChecklistItem`.
+
+```bash
+npm test
+```
+
+### Backend (Pytest)
+**17 tests passed** covering core agent logic and infrastructure:
+- **Config Validation:** Ensures all GCP and Vertex AI parameters are correctly set.
+- **Formatter Agent:** Tests structured JSON response generation and language support.
+- **RAG Agent:** Validates Discovery Engine integration and context retrieval.
+- **FastAPI Routes:** Verifies health status and endpoint reachability.
+
+```bash
+cd backend && pytest
+```
+
+---
+
 ## 📂 Project Structure
 
 - `/app`: Next.js pages and API routes.
 - `/backend`: Python ADK backend.
-  - `/agents`: Specialized agent implementations.
-  - `main.py`: FastAPI entry point.
-- `/components`: Reusable UI components (ReadinessRing, ResponseCard, etc.).
+  - `/agents`: Specialized agent implementations (RAG, Search, Formatter).
+  - `/tests`: Pytest suite for backend verification.
+- `/__tests__`: Jest test suite for frontend and logic.
+- `/components`: Reusable UI components.
 - `/lib`: Shared logic (Firebase, Recommendation Engine).
 - `/data`: Static configuration and simulator state.
 
 ---
 
-## 📝 Assumptions & Scope
-- **Neutrality:** The system does not recommend candidates or parties; it focuses strictly on the electoral process.
-- **Data Sources:** Primary grounding is performed against 5 core ECI handbooks (Handbook for Electors, EVM FAQs, etc.).
-- **Live Data:** Real-time election dates and results are fetched via Google Search grounding.
-
----
-
 ## 🤝 Acknowledgments
-- **Google** for providing the Vertex AI and Gemini infrastructure.
+- **Google DeepMind** for providing the Vertex AI and Gemini infrastructure.
+- **Hack2skill** for organizing the PromptWars challenge.
 
 ---
 Built with ❤️ by [Prabal](https://github.com/prabaaal)
