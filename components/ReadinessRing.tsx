@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 
-export function ReadinessRing({ score }: { score: number }) {
+export default function ReadinessRing({ score }: { score: number }) {
   const [offset, setOffset] = useState(100)
 
   useEffect(() => {
@@ -52,3 +52,6 @@ export function ReadinessRing({ score }: { score: number }) {
     </div>
   )
 }
+
+// Named export for backward compat
+export { ReadinessRing }

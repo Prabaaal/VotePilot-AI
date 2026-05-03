@@ -1,57 +1,82 @@
 import type { UserProfile } from "@/types"
 
+export type ChecklistEntry = {
+  label: string
+  done: boolean
+}
+
 export type Recommendation = {
   currentStage: string
-  nextActions: string[]
-  recommendedModules: string[]
+  nextAction: string
+  checklist: ChecklistEntry[]
   warnings: string[]
-  readinessScore: number
+  readinessSeedScore: number
+  // Legacy fields kept for backward compat
+  nextActions?: string[]
+  recommendedModules?: string[]
+  readinessScore?: number
 }
 
 export function getRecommendations(profile: UserProfile): Recommendation {
-  const nextActions: string[] = []
   const warnings: string[] = []
-  const recommendedModules: string[] = []
-  let readinessScore = 40
+  const checklist: ChecklistEntry[] = []
+  let readinessSeedScore = 40
 
   if (profile.age < 18) {
     return {
       currentStage: "Not Yet Eligible",
+      nextAction: "Learn about eligibility requirements for future elections",
+      checklist: [
+        { label: "Check eligibility age requirement", done: false },
+        { label: "Prepare for future election registration", done: false },
+      ],
+      warnings: ["You may not meet the voting age requirement"],
+      readinessSeedScore: 5,
       nextActions: ["Learn about eligibility requirements for future elections"],
       recommendedModules: ["Ask VotePilot", "Myth Buster"],
-      warnings: ["You may not meet the voting age requirement"],
-      readinessScore: 10
+      readinessScore: 5,
     }
   }
 
+  // Base checklist items
+  checklist.push({ label: "Confirm your name on the electoral roll", done: true })
+  checklist.push({ label: "Locate your assigned polling booth", done: false })
+
+  let nextAction = "Review your voter readiness checklist"
+
   if (profile.firstTimeVoter) {
-    nextActions.push("Start with the Booth Day Simulator")
-    recommendedModules.push("Simulator", "Ask VotePilot")
-    readinessScore += 10
+    nextAction = "Start with the Booth Day Simulator"
+    checklist.push({ label: "Complete the Booth Day Simulator", done: false })
+    readinessSeedScore += 10
   }
 
   if (!profile.hasVoterId) {
-    nextActions.push("Apply for Voter ID at voterportal.eci.gov.in")
+    nextAction = "Apply for Voter ID at voterportal.eci.gov.in"
+    checklist.push({ label: "Apply for Voter ID at voterportal.eci.gov.in", done: false })
     warnings.push("You need a valid photo ID to vote")
   } else {
-    readinessScore += 20
+    checklist.push({ label: "Keep your Voter ID ready for polling day", done: true })
+    readinessSeedScore += 20
   }
 
   if (profile.movedRecently) {
-    nextActions.push("Verify your name on electoral roll at electoralsearch.eci.gov.in")
+    checklist.push({ label: "Update your address on the electoral roll", done: false })
     warnings.push("Recent address changes may affect your registration")
-    recommendedModules.push("Ask VotePilot")
+    readinessSeedScore -= 5
   } else {
-    readinessScore += 15
+    readinessSeedScore += 15
   }
 
-  recommendedModules.push("Elections", "Myth Buster")
+  checklist.push({ label: "Know your polling booth location", done: false })
 
   return {
     currentStage: "Pre-Election Preparation",
-    nextActions,
-    recommendedModules: Array.from(new Set(recommendedModules)),
+    nextAction,
+    checklist,
     warnings,
-    readinessScore
+    readinessSeedScore,
+    nextActions: [nextAction],
+    recommendedModules: ["Elections", "Myth Buster"],
+    readinessScore: readinessSeedScore,
   }
 }

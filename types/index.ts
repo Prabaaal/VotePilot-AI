@@ -4,6 +4,7 @@ export type UserProfile = {
   movedRecently: boolean
   hasVoterId: boolean
   state: string
+  helpMode?: string
   readinessScore?: number
   completedModules?: string[]
 }
