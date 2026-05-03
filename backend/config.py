@@ -2,7 +2,8 @@
 import os
 
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "votepilot-ai")
-LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "asia-south1")
+# Gemini on Vertex AI is only available in us-central1 and a few other regions
+LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
 DATASTORE_ID = os.environ.get("DATASTORE_ID", "eci-documents_1777829976236")
 
 # Use Vertex AI via ADC (Cloud Run service account) — no API key needed
