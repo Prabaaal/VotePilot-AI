@@ -55,7 +55,7 @@ export default function DashboardPage() {
   if (loading) return <SkeletonDashboard />
   if (!profile || !recommendation) return null
 
-  const score = profile.readinessScore ?? recommendation.readinessScore
+  const score = profile.readinessScore ?? recommendation.readinessScore ?? recommendation.readinessSeedScore ?? 0
   const completedModules = profile.completedModules ?? ["onboarding"]
 
   return (
@@ -100,13 +100,11 @@ export default function DashboardPage() {
           {/* Next Actions */}
           <div className="col-span-1 md:col-span-2 card">
             <h2 style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '20px', color: '#1A1A2E', marginBottom: '16px' }}>
-              🎯 Your Next Actions
+              🎯 Your Next Action
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {recommendation.nextActions.length > 0 ? (
-                recommendation.nextActions.map((action, i) => (
-                  <ChecklistItem key={i} item={action} done={false} />
-                ))
+              {recommendation.nextAction ? (
+                <ChecklistItem label={recommendation.nextAction} done={false} />
               ) : (
                 <div style={{ textAlign: 'center', padding: '32px', background: '#DCFCE7', border: '2px solid #86EFAC', borderRadius: '14px' }}>
                   <div style={{ fontSize: '40px', marginBottom: '12px' }}>🎉</div>
@@ -186,14 +184,8 @@ export default function DashboardPage() {
             📋 Preparation Checklist
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {[
-              { label: "Check voter registration status", done: profile.hasVoterId },
-              { label: "Know your polling booth location", done: false },
-              { label: "Understand the EVM voting process", done: completedModules.includes("simulator") },
-              { label: "Know your rights at the booth", done: completedModules.includes("ask") },
-              ...(profile.movedRecently ? [{ label: "Verify registration after address change", done: false }] : []),
-            ].map((item, i) => (
-              <ChecklistItem key={i} item={item.label} done={item.done} />
+            {recommendation.checklist.map((item, i) => (
+              <ChecklistItem key={i} label={item.label} done={item.done} />
             ))}
           </div>
         </div>
