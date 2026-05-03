@@ -1,11 +1,19 @@
-import os
-from dotenv import load_dotenv
+# backend/config.py
 
-load_dotenv()
+PROJECT_ID = "votepilot-ai"
+LOCATION = "global"
+DATASTORE_ID = "eci-documents_1777829976236"
+MODEL = "gemini-2.5-flash"
 
-PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "votepilot-ai")
-LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "asia-south1")
+KEY_FILE = "gcp_key.json" 
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+GOOGLE_APPLICATION_CREDENTIALS = os.path.join(CURRENT_DIR, KEY_FILE)
 
-# Vertex AI Search / Datastore Constants
-DATASTORE_ID = os.environ.get("DATASTORE_ID", "eci-documents")
-DATASTORE_LOCATION = os.environ.get("DATASTORE_LOCATION", "global")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = GOOGLE_APPLICATION_CREDENTIALS
+
+# Full datastore resource name — ADK needs this format
+DATASTORE_RESOURCE = (
+    f"projects/{PROJECT_ID}/locations/global"
+    f"/collections/default_collection"
+    f"/dataStores/{DATASTORE_ID}"
+)
